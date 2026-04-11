@@ -1,8 +1,8 @@
 # My Yoga
 
-A quiet, guided evening yoga practice. A single static web app — no tracking, no accounts, no ads, no third-party requests.
+A quiet, guided evening yoga practice.
 
-> **Status**: this repository is currently being refactored from a single-file prototype into a properly modular web app. The migration plan lives in `scratch/refactor-plan/` and is being executed in phases. The proper README (screenshots, full feature list, architecture overview, deployment notes) will be written in migration phase 8. For now this is a stub.
+> **Status**: this repository is currently being refactored from a single-file prototype into a modular web app. The migration plan lives in `scratch/refactor-plan/` and is being executed in phases. The proper README (screenshots, full feature list, architecture overview, deployment notes) will be written in migration phase 8. For now this is a stub.
 
 ## Running locally
 
