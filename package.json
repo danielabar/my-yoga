@@ -1,0 +1,33 @@
+{
+  "name": "my-yoga",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TBD",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielabar/my-yoga.git"
+  },
+  "author": "Daniela Baron",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danielabar/my-yoga/issues"
+  },
+  "homepage": "https://github.com/danielabar/my-yoga#readme",
+  "scripts": {
+    "dev": "npx serve .",
+    "test:unit": "npx playwright test tests/unit/",
+    "test:e2e": "npx playwright-bdd && npx playwright test tests/e2e/",
+    "test:e2e:headed": "npx playwright-bdd && npx playwright test tests/e2e/ --headed",
+    "test:e2e:chromium": "npx playwright-bdd && npx playwright test tests/e2e/ --project=e2e-chromium",
+    "test": "npx playwright test tests/unit/ && npx playwright-bdd && npx playwright test tests/e2e/",
+    "test:coverage": "npx playwright-bdd --config playwright.coverage.config.js && npx playwright test --config playwright.coverage.config.js",
+    "screenshots": "npx playwright test --config scripts/playwright.screenshots.config.js"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^11.0.0",
+    "@playwright/test": "^1.50.0",
+    "monocart-reporter": "^2.10.0",
+    "playwright-bdd": "^8.0.0",
+    "serve": "^14.0.0"
+  }
+}
