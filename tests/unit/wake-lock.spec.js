@@ -8,6 +8,13 @@ let mockVisibilityState;
 let visibilityHandlers;
 let pagehideHandlers;
 
+// On Node 24+, `navigator` is a read-only getter on globalThis.
+// Use Object.defineProperty so the stub works on both Node 18 (local) and
+// Node 24 (CI). Same treatment for `document` and `window` to be safe.
+function defineGlobal(name, value) {
+  Object.defineProperty(globalThis, name, { value, writable: true, configurable: true });
+}
+
 function makeMockSentinel() {
   return {
     release: async () => {
@@ -28,27 +35,27 @@ test.describe("wake-lock", () => {
     visibilityHandlers = [];
     pagehideHandlers = [];
 
-    global.document = {
+    defineGlobal("document", {
       get visibilityState() {
         return mockVisibilityState;
       },
       addEventListener: (event, fn) => {
         if (event === "visibilitychange") visibilityHandlers.push(fn);
       },
-    };
-    global.window = {
+    });
+    defineGlobal("window", {
       addEventListener: (event, fn) => {
         if (event === "pagehide") pagehideHandlers.push(fn);
       },
-    };
-    global.navigator = {
+    });
+    defineGlobal("navigator", {
       wakeLock: {
         request: async () => {
           requestCalls.push(Date.now());
           return makeMockSentinel();
         },
       },
-    };
+    });
 
     _reset();
     start();
@@ -80,7 +87,7 @@ test.describe("wake-lock", () => {
   });
 
   test("acquire swallows errors when the API throws", async () => {
-    global.navigator.wakeLock.request = async () => {
+    navigator.wakeLock.request = async () => {
       throw new Error("not allowed");
     };
     await expect(acquire()).resolves.toBeUndefined();

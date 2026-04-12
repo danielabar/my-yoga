@@ -4,26 +4,46 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-`index.html` is a self-contained guided evening yoga app — a single static HTML file with inline CSS and JavaScript. There is no build system, package manager, or dependency install step.
+A guided evening yoga web app — vanilla HTML, CSS, and JavaScript with no build system or bundler. Deployed to GitHub Pages via `actions/deploy-pages`.
 
 ## Running it
 
-- Open `index.html` directly in a browser, or serve the directory with any static server (e.g. `python3 -m http.server`).
-- The Wake Lock API requires **HTTPS** (or `localhost`); over `file://` or plain HTTP it silently falls back to a zero-gain Web Audio loop to keep the screen awake. Test both paths when touching wake-lock code.
-- Browser `speechSynthesis` is used for narration — voices load asynchronously via `synth.onvoiceschanged`, and available voices differ per browser/OS.
+- `npm run dev` (or `npx serve . -l 3000`) to start a local server at `http://localhost:3000`.
+- The Wake Lock API requires **HTTPS** (or `localhost`); over `file://` or plain HTTP it silently does nothing. See `js/wake-lock.js` and `scratch/refactor-plan/02-wake-lock-investigation.md`.
+- Browser `speechSynthesis` is used for narration — voices load asynchronously via `synth.onvoiceschanged`, and available voices differ per browser/OS. See `js/voice.js`.
 
 ## Architecture
 
-Everything lives in `index.html`. The important structure:
+Mirrors `charitable-tax-credit-calculator-canada` (charity calc). Key directories:
 
-1. **`sequence` array** (~line 490): the ordered list of pose objects, each `{ name, duration, speech, breath }`. `duration` is seconds; `breath` is one of `"slow" | "guided" | "natural"`. Editing the practice = editing this array. Left/right sides are **separate steps** with equal timing — keep that symmetry when adding poses.
-2. **Sequence runner** (`runStep` / `runSequence`): async loop that, for each pose, shows the card, starts the breath animation, `await`s `speak(pose.speech)`, then waits out the remaining hold time. The actual hold is `Math.max(pose.duration * 1000, 5000)` — so `duration` is effectively a floor for the *entire* step including narration, not an additional hold after speech. Keep this in mind when tuning timings.
-3. **Transport state**: `isRunning` / `isPaused` / `currentStep` / `stepTimer`. Pause works by gating the interval tick and calling `synth.pause()` / `synth.resume()`; the `checkDone` interval in `runStep` also honors `isPaused`.
-4. **Wake Lock** (`acquireWakeLock` / `releaseWakeLock`): tries `navigator.wakeLock.request('screen')` first, falls back to a silent looping `AudioBufferSourceNode` through a zero-gain node. A `visibilitychange` listener re-acquires the lock when the tab becomes visible again mid-session.
-5. **UI views**: `idleView`, `poseCard` + `upNext`, and `completedView` are toggled via inline `style.display`. `buildPreview()` populates the idle-view sequence list from the `sequence` array at load time.
+- `index.html` — shell with `<header>`, `<nav>`, `<main id="content">`. All view content loaded dynamically.
+- `js/` — ES modules. Entry point is `js/app.js` (loaded as `<script type="module">`).
+  - `js/router.js` — pushState SPA router, two routes: `/` → practice, `/about` → about.
+  - `js/session.js` — session orchestrator. `startSession()` returns `{ stop }`. All state in a closure.
+  - `js/wake-lock.js` — wake lock manager with split intent (`wantsLock`) / sentinel (`lock`) state. Call `start()` once at boot to register browser listeners.
+  - `js/voice.js` — speechSynthesis wrapper.
+  - `js/format-time.js`, `js/sequence-loader.js`, `js/base-path.js` — pure helpers.
+  - `js/ui/` — DOM mutators (template-loader, breath-circle, pose-card, progress). Not unit-tested; covered by e2e.
+- `views/<name>/template.html` + `views/<name>/script.js` — view modules with `init(contentEl, html)` / `destroy()` lifecycle.
+- `css/` — layered CSS (`@layer reset, base, components, utilities`). `css/index.css` is the import manifest. Colors use OKLCH primitives in `css/colors.css`.
+- `config/sequences/evening.json` — the pose sequence data. Loaded via `js/sequence-loader.js`.
+- `fonts/` — self-hosted Cormorant Garamond + Nunito (TTFs). Never load from Google Fonts CDN.
+
+## Testing
+
+- **Always run `npm test` before committing and pushing.** Tests must be green. Do not commit with failing tests.
+- Test runner: Playwright, single runner, two projects (`unit` and `e2e-chromium`).
+- Unit tests (`tests/unit/`): pure-Node imports, no browser. Test pure functions and API wrappers with stubbed globals.
+- E2E tests (`tests/e2e/`): playwright-bdd with Gherkin features. Run against `http://localhost:3000` via `webServer` in `playwright.config.js`.
+- Scripts: `npm run test:unit`, `npm run test:e2e`, `npm test` (both).
 
 ## Conventions
 
-- Single file. Do not split into separate JS/CSS files unless explicitly asked — the all-in-one layout is intentional (trivial to host, email, or open offline).
-- Inline CSS uses CSS variables defined in `:root` (`--bg-deep`, `--accent-warm`, etc.). Prefer these over hard-coded colors.
-- No framework, no bundler, no tests. Changes are verified by opening the file in a browser.
+- Vanilla JS, no framework, no bundler.
+- CSS uses `@layer` cascade and OKLCH color space. Prefer semantic tokens from `css/colors.css` over hard-coded colors.
+- BEM-ish class naming (`.pose-card__label`, `.btn--primary`).
+- Kebab-case file naming.
+- Self-hosted fonts with `font-display: swap`.
+- No Pause button (decided — see `scratch/refactor-plan/03-technical-decisions.md`).
+- Wake lock is always on during sessions (no user toggle).
+- Sequence loaded via `?sequence=<name>` URL param (defaults to `evening`).
