@@ -36,26 +36,26 @@ test.describe("parseSequence", () => {
     expect(() => parseSequence(missingNameFixture)).toThrow(/missing.*name/i);
   });
 
-  test("rejects a pose with non-numeric duration", () => {
+  test("rejects a pose with non-numeric holdSeconds", () => {
     expect(() =>
       parseSequence({
-        poses: [{ id: "x", name: "X", duration: "thirty", breath: "slow", speech: "..." }],
+        poses: [{ id: "x", name: "X", holdSeconds: "thirty", breath: "slow", speech: "..." }],
       }),
-    ).toThrow(/duration/i);
+    ).toThrow(/holdSeconds/i);
   });
 
-  test("rejects a pose with zero or negative duration", () => {
+  test("rejects a pose with zero or negative holdSeconds", () => {
     expect(() =>
       parseSequence({
-        poses: [{ id: "x", name: "X", duration: 0, breath: "slow", speech: "..." }],
+        poses: [{ id: "x", name: "X", holdSeconds: 0, breath: "slow", speech: "..." }],
       }),
-    ).toThrow(/duration/i);
+    ).toThrow(/holdSeconds/i);
   });
 
   test("rejects a pose with invalid breath pattern", () => {
     expect(() =>
       parseSequence({
-        poses: [{ id: "x", name: "X", duration: 10, breath: "yelling", speech: "..." }],
+        poses: [{ id: "x", name: "X", holdSeconds: 10, breath: "yelling", speech: "..." }],
       }),
     ).toThrow(/breath/i);
   });
@@ -63,7 +63,7 @@ test.describe("parseSequence", () => {
   test("rejects a pose with non-string speech", () => {
     expect(() =>
       parseSequence({
-        poses: [{ id: "x", name: "X", duration: 10, breath: "slow", speech: 42 }],
+        poses: [{ id: "x", name: "X", holdSeconds: 10, breath: "slow", speech: 42 }],
       }),
     ).toThrow(/speech/i);
   });
@@ -71,9 +71,17 @@ test.describe("parseSequence", () => {
   test("accepts all three valid breath patterns", () => {
     for (const breath of ["slow", "guided", "natural"]) {
       const seq = parseSequence({
-        poses: [{ id: "x", name: "X", duration: 10, breath, speech: "..." }],
+        poses: [{ id: "x", name: "X", holdSeconds: 10, breath, speech: "..." }],
       });
       expect(seq.poses[0].breath).toBe(breath);
     }
+  });
+
+  test("rejects the old 'duration' field with a clear error", () => {
+    expect(() =>
+      parseSequence({
+        poses: [{ id: "x", name: "X", duration: 10, breath: "slow", speech: "..." }],
+      }),
+    ).toThrow(/old.*duration.*holdSeconds/i);
   });
 });

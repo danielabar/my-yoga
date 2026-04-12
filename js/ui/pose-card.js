@@ -17,9 +17,9 @@ export function renderPoseCard(els, pose, step, total, nextPose) {
   els.name.textContent = pose.name;
   els.instruction.textContent = "";
   els.timer.textContent =
-    pose.duration >= 60
-      ? `${Math.round(pose.duration / 60)} min`
-      : `${pose.duration} sec`;
+    pose.holdSeconds >= 60
+      ? `${Math.round(pose.holdSeconds / 60)} min`
+      : `${pose.holdSeconds} sec`;
 
   if (nextPose) {
     els.upNext.style.display = "";

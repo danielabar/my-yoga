@@ -4,7 +4,7 @@
   "poses": [
     {
       "id": "test-arrive",
-      "duration": 20,
+      "holdSeconds": 10,
       "breath": "slow",
       "speech": "This pose is missing its 'name' field, which should fail validation."
     }

@@ -11,18 +11,13 @@
  *     "title": "Evening Gentle Yoga",
  *     "subtitle": "stretching & breathing · ~16 minutes",
  *     "poses": [
- *       { "id": "...", "name": "...", "duration": 20, "breath": "slow", "speech": "..." },
+ *       { "id": "...", "name": "...", "holdSeconds": 15, "breath": "slow", "speech": "..." },
  *       ...
  *     ]
  *   }
  *
- * Note on `duration` vs `holdSeconds`:
- * The migration plan §7a decides to rename `duration` → `holdSeconds` with a
- * cleaner semantic ("hold this many seconds *after* speech ends"). Phase 5a
- * keeps the old `duration` field because the existing evening.json uses it
- * and 7a is where the rename + retuning happens together. The validator here
- * intentionally accepts `duration` for now; when 7a lands, flip the required
- * field name.
+ * `holdSeconds` is the number of seconds to hold the pose *after* speech ends.
+ * The old `duration` field is no longer accepted — see migration plan §7a.
  */
 
 const VALID_BREATHS = new Set(["slow", "guided", "natural"]);
@@ -58,7 +53,12 @@ function validatePose(pose, index) {
   if (!pose || typeof pose !== "object") {
     throw new Error(`Pose at index ${index} is not an object`);
   }
-  const required = ["id", "name", "duration", "breath", "speech"];
+  if (pose && typeof pose === "object" && "duration" in pose) {
+    throw new Error(
+      `Pose at index ${index} uses the old 'duration' field — rename it to 'holdSeconds' (seconds to hold after speech ends)`,
+    );
+  }
+  const required = ["id", "name", "holdSeconds", "breath", "speech"];
   for (const field of required) {
     if (!(field in pose)) {
       throw new Error(`Pose at index ${index} is missing '${field}'`);
@@ -70,8 +70,8 @@ function validatePose(pose, index) {
   if (typeof pose.name !== "string" || pose.name.length === 0) {
     throw new Error(`Pose at index ${index} (id=${pose.id}) has invalid 'name'`);
   }
-  if (typeof pose.duration !== "number" || pose.duration <= 0 || !Number.isFinite(pose.duration)) {
-    throw new Error(`Pose '${pose.id}' has invalid 'duration' — must be a positive number`);
+  if (typeof pose.holdSeconds !== "number" || pose.holdSeconds <= 0 || !Number.isFinite(pose.holdSeconds)) {
+    throw new Error(`Pose '${pose.id}' has invalid 'holdSeconds' — must be a positive number`);
   }
   if (typeof pose.breath !== "string" || !VALID_BREATHS.has(pose.breath)) {
     throw new Error(`Pose '${pose.id}' has invalid 'breath' — must be one of: ${[...VALID_BREATHS].join(", ")}`);
