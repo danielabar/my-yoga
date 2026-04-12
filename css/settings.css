@@ -34,6 +34,12 @@
     margin-top: 16px;
   }
 
+  .settings__hint {
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+    margin: 0 0 12px;
+  }
+
   .setting-row {
     display: flex;
     align-items: center;
