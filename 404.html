@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <title>Redirecting…</title>
   <script>
-    // Phase 1: minimal SPA 404 fallback for GitHub Pages. Any unknown path
-    // redirects back to the app root. Phase 5 will rewrite this file to
-    // import `js/base-path.js`, store the intended path in sessionStorage,
-    // and let the pushState router honour deep links (e.g. /about).
-    // See scratch/refactor-plan/05-migration-plan.md §5f.
-    const repoName = "my-yoga";
-    const segments = location.pathname.split("/").filter(Boolean);
-    const basePath = segments[0] === repoName ? "/" + repoName + "/" : "/";
+    // SPA 404 fallback for GitHub Pages.
+    // Store the intended path in sessionStorage so the router can honour
+    // deep links (e.g. /about). The inline script in index.html reads this
+    // back and calls history.replaceState before the router starts.
+    sessionStorage.setItem("redirect", location.pathname + location.search);
+    var repoName = "my-yoga";
+    var segments = location.pathname.split("/").filter(Boolean);
+    var basePath = segments[0] === repoName ? "/" + repoName + "/" : "/";
     location.replace(basePath);
   </script>
 </head>

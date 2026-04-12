@@ -1,0 +1,27 @@
+{
+  "title": "Test Sequence",
+  "subtitle": "three poses",
+  "poses": [
+    {
+      "id": "test-arrive",
+      "name": "Arriving",
+      "duration": 20,
+      "breath": "slow",
+      "speech": "Welcome. Find a comfortable seated position."
+    },
+    {
+      "id": "test-breath",
+      "name": "Deep Breathing",
+      "duration": 30,
+      "breath": "guided",
+      "speech": "Inhale slowly. Exhale slowly."
+    },
+    {
+      "id": "test-rest",
+      "name": "Final Rest",
+      "duration": 15,
+      "breath": "natural",
+      "speech": "Rest here. Breathing naturally."
+    }
+  ]
+}

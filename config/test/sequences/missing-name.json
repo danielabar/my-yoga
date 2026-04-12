@@ -1,0 +1,12 @@
+{
+  "title": "Broken Sequence",
+  "subtitle": "missing a name field",
+  "poses": [
+    {
+      "id": "test-arrive",
+      "duration": 20,
+      "breath": "slow",
+      "speech": "This pose is missing its 'name' field, which should fail validation."
+    }
+  ]
+}

@@ -1,12 +1,32 @@
 /*
- * Nav is intentionally empty in phase 4 — the original index.html has no
- * navigation element. Phase 5f adds a pushState router and phase 6 adds the
- * About view, at which point this file will pick up:
- *   - `.top-nav` for desktop (>= 769px)
- *   - `.tab-bar` for mobile (<= 768px)
- * with a media-query swap. That's the explicit deviation from charity calc
- * documented in scratch/refactor-plan/03-technical-decisions.md §"Navigation".
+ * Navigation links in the app header.
+ *
+ * Phase 6 will add the desktop `.top-nav` / mobile `.tab-bar` breakpoint
+ * swap described in 03-technical-decisions.md §"Navigation". For now the
+ * nav lives inside the header as a simple inline link row.
  */
 @layer components {
-  /* (empty — see header comment) */
+  .app-header nav {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-lg);
+    margin-top: var(--space-sm);
+  }
+
+  .app-header nav a {
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-text-dim);
+    padding-bottom: 2px;
+    border-bottom: 1.5px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .app-header nav a:hover,
+  .app-header nav a.active {
+    color: var(--color-accent-glow);
+    border-bottom-color: var(--color-accent-glow);
+  }
 }
