@@ -485,172 +485,11 @@
 </div>
 
 <script>
-// ── Sequence: gentle stretches & breathing only, ~16 min ──
-// All left/right sides are separate steps with equal timing
-const sequence = [
-  {
-    name: "Arriving",
-    duration: 20,
-    speech: "Welcome. Find a comfortable cross-legged seated position. Let your hands rest on your knees. Close your eyes if that feels comfortable. Take a moment to arrive here.",
-    breath: "slow"
-  },
-  {
-    name: "Deep Breathing",
-    duration: 45,
-    speech: "When you're ready, place your hands on the floor behind you and slowly lower yourself down onto your back. Let your legs extend long. Let your arms rest by your sides, palms facing upward if that's comfortable. Begin to deepen your breath. Breathe in slowly through your nose, feeling your belly rise. And breathe out slowly through your mouth, feeling your belly fall. Let each exhale be a little longer than the inhale. With every breath out, let your body soften a little more into the floor.",
-    breath: "guided"
-  },
-  {
-    name: "Right Knee to Chest",
-    duration: 40,
-    speech: "Gently draw your right knee in toward your chest. Interlace your fingers around your right shin or behind your right thigh. Keep your left leg long on the floor, or bend it if that's more comfortable. Breathe into any sensation you feel in your right hip and lower back. There's no need to pull hard. Just hold gently and breathe.",
-    breath: "slow"
-  },
-  {
-    name: "Left Knee to Chest",
-    duration: 40,
-    speech: "Slowly release your right leg back down. Now draw your left knee in toward your chest. Interlace your fingers around your left shin or behind your left thigh. Keep your right leg long or bent, whatever feels better. Breathe into your left hip and lower back. Same gentle hold, same slow breathing.",
-    breath: "slow"
-  },
-  {
-    name: "Both Knees to Chest",
-    duration: 30,
-    speech: "Now draw both knees in toward your chest. Wrap your arms around your shins and gently rock side to side, massaging your lower back against the floor. Let this feel easy, like you're rocking yourself. Keep breathing slowly and deeply.",
-    breath: "slow"
-  },
-  {
-    name: "Supine Twist — Right Side",
-    duration: 45,
-    speech: "With both knees still bent, let your knees fall gently to the right side. Open your left arm out to the left. Turn your gaze toward your left hand if your neck allows. Breathe into the gentle twist through your spine. Let gravity do the work. You don't need to force your knees to the floor. Stay here, breathing slowly.",
-    breath: "slow"
-  },
-  {
-    name: "Supine Twist — Left Side",
-    duration: 45,
-    speech: "Slowly bring your knees back to centre. Now let them fall gently to the left side. Open your right arm out to the right. Turn your gaze toward your right hand if that feels comfortable. Breathe into this side. Same gentle twist, same slow breath. Let gravity do the work.",
-    breath: "slow"
-  },
-  {
-    name: "Bound Angle — Hands Behind",
-    duration: 30,
-    speech: "Slowly bring your knees back to centre. Roll to one side and come up to a seated position. Bring the soles of your feet together and let your knees fall open to the sides, like a butterfly. Draw your heels in as close to your body as is comfortable. Now place your hands on the floor behind you, fingertips pointing away. Press gently into your hands to lift your chest and lengthen your spine. Let the weight of your knees fall toward the floor. Don't push them down, just let gravity open your hips. Breathe here.",
-    breath: "slow"
-  },
-  {
-    name: "Bound Angle — Hands on Ankles",
-    duration: 30,
-    speech: "Keeping your feet together and knees wide, bring your hands forward and hold gently onto your ankles or your feet. Sit up tall, lengthening through the crown of your head. Keep your shoulders relaxed and away from your ears. Feel the opening through your inner thighs and hips. Breathe slowly and steadily.",
-    breath: "slow"
-  },
-  {
-    name: "Seated Twist — Left",
-    duration: 40,
-    speech: "From bound angle, keep your right leg where it is, sole of foot resting against your inner thigh. Lift your left knee up so it points toward the ceiling, and place your left foot flat on the floor in front of your right leg. Wrap your right arm around your left knee, hugging it gently. Place your left hand on the floor behind you. On an inhale, sit up tall. On an exhale, gently twist to the left. Let your breath guide you deeper only if your body wants to go. Stay here, breathing.",
-    breath: "slow"
-  },
-  {
-    name: "Seated Twist — Right",
-    duration: 40,
-    speech: "Slowly release and come back to bound angle, soles of feet together, knees wide. Now keep your left leg where it is. Lift your right knee up toward the ceiling and place your right foot flat on the floor in front of your left leg. Wrap your left arm around your right knee. Place your right hand on the floor behind you. Inhale, sit tall. Exhale, gently twist to the right. Same gentle rotation on this side. Breathe slowly.",
-    breath: "slow"
-  },
-  {
-    name: "Seated Forward Fold — Right Leg",
-    duration: 30,
-    speech: "Slowly release the twist and come back to centre. Straighten both legs out in front of you for a moment, giving yourself a gentle shake to release. Now extend your right leg straight out and flex your right foot. Bend your left knee and place the sole of your left foot flat against your right inner thigh. Inhale and raise both arms overhead, sitting up tall. As you exhale, slowly fold forward over your right leg. Reach toward your shin, ankle, or foot, wherever you land. Never force it. Let your head be heavy. Breathe into the stretch along the back of your right leg.",
-    breath: "slow"
-  },
-  {
-    name: "Seated Forward Fold — Left Leg",
-    duration: 30,
-    speech: "Slowly come back up. Now extend your left leg straight out and flex your left foot. Bend your right knee and place the sole of your right foot flat against your left inner thigh. Inhale, raise both arms overhead, sitting tall. Exhale, slowly fold forward over your left leg. Same gentle reach. Same easy breath. Let gravity help you, never forcing. Hold here and breathe.",
-    breath: "slow"
-  },
-  {
-    name: "Seated Forward Fold — Both Legs",
-    duration: 45,
-    speech: "Slowly come back up. Now extend both legs out in front of you. Flex both feet. On an inhale, reach your arms up and lengthen your spine. On an exhale, fold gently forward from your hips, reaching toward your shins, ankles, or feet. Wherever your hands land is perfect. Let your head be heavy. Breathe into the stretch along the back of both legs. Soften with each exhale.",
-    breath: "slow"
-  },
-  {
-    name: "Neck Stretch — Forward",
-    duration: 30,
-    speech: "Slowly come up from your fold. Draw your legs in and cross them, finding a comfortable cross-legged position. Let your spine be tall but relaxed. Gently let your chin drop toward your chest. Feel the stretch along the back of your neck and into your upper back. You can let the weight of your head be heavy. Breathe slowly into the stretch. No need to push or pull, just let gravity lengthen the back of your neck.",
-    breath: "slow"
-  },
-  {
-    name: "Neck Stretch — Right Side",
-    duration: 30,
-    speech: "From here, slowly roll your head to the right, bringing your right ear toward your right shoulder. Pause here and breathe. Feel the stretch along the left side of your neck.",
-    breath: "slow"
-  },
-  {
-    name: "Neck Stretch — Left Side",
-    duration: 30,
-    speech: "Slowly roll your head forward, chin toward chest, passing through centre. Continue rolling to the left side, bringing your left ear toward your left shoulder. Pause and breathe. Feel the stretch along the right side of your neck. There's no rush. Let this be slow and easy.",
-    breath: "slow"
-  },
-  {
-    name: "Neck Stretch — Throat",
-    duration: 15,
-    speech: "Slowly bring your head back to centre. Now gently let your head drop back, looking straight up toward the ceiling. Feel a gentle stretch across the front of your throat and chest. Keep your jaw relaxed. Breathe softly. Hold here for just a few moments.",
-    breath: "slow"
-  },
-  {
-    name: "Eagle Arms — Right Under",
-    duration: 30,
-    speech: "Bring your head back to centre. Reach both arms up overhead in a wide V shape. Sweep them forward and straight out in front of you. Now cross your right arm under your left at the elbows. Bend both elbows and wind your forearms around each other, bringing your palms to face each other, or as close as they'll come. Gently lift your elbows upward while keeping your shoulders relaxed and away from your ears. Feel the stretch deep between your shoulder blades and across your upper back. Breathe into the opening. Hold here.",
-    breath: "slow"
-  },
-  {
-    name: "Eagle Arms — Left Under",
-    duration: 30,
-    speech: "Slowly unwind your arms and give your shoulders a gentle shake. Let any tension release. Now reach both arms up overhead in that wide V again. Sweep them forward and straight out in front of you. This time cross your left arm under your right at the elbows. Bend both elbows and wind your forearms around each other, palms facing each other or close to it. Gently lift your elbows up. Same stretch on this side. Breathe slowly. Hold here. When it's time, slowly unwind your arms and give your shoulders one more gentle shake.",
-    breath: "slow"
-  },
-  {
-    name: "Cat-Cow Stretch",
-    duration: 55,
-    speech: "From your seated position, lean forward and come onto your hands and knees into tabletop position. Place your hands about shoulder width apart, fingers spread wide, wrists directly under your shoulders. Bring your knees hip width apart, directly under your hips. Take a moment to settle here. Your back is flat like a table, gaze down between your hands. When you're ready, on your inhale, gently drop your belly toward the floor, lift your chest and gaze slightly up. This is cow pose. On your exhale, round your spine toward the ceiling, tuck your chin, draw your belly in. This is cat. Continue flowing between these two, led by your breath. Inhale, open. Exhale, round. Move as slowly as feels good.",
-    breath: "guided"
-  },
-  {
-    name: "Child's Pose",
-    duration: 30,
-    speech: "From hands and knees, sink your hips back toward your heels. Extend your arms forward on the floor, or bring them alongside your body, whatever feels more restful. Let your forehead rest on the floor or on your hands. This is child's pose. Let your whole back body expand with each breath in. Let everything release with each breath out. Rest here.",
-    breath: "slow"
-  },
-  {
-    name: "Side Stretch — Right",
-    duration: 40,
-    speech: "Slowly come up from child's pose and find a comfortable cross-legged seated position. Walk your right fingertips out along the floor to the right, away from your body. Raise your left arm straight up toward the ceiling. On an inhale, reach up tall through your left hand. On an exhale, gently begin to stretch up and over to the right, only as far as feels comfortable. If you can, turn your gaze slightly upward toward your left arm. Breathe into the stretch along your entire left side. Stay here, breathing slowly. When it's time, gradually release and lower your left arm down.",
-    breath: "slow"
-  },
-  {
-    name: "Side Stretch — Left",
-    duration: 40,
-    speech: "Come back to centre. Now walk your left fingertips out along the floor to the left. Raise your right arm straight up toward the ceiling. On an inhale, reach up tall through your right hand. On an exhale, gently stretch up and over to the left, only as far as is comfortable. Turn your gaze slightly upward toward your right arm if you can. Breathe into the stretch along your entire right side. Stay here. When it's time, gradually release and lower your right arm down.",
-    breath: "slow"
-  },
-  {
-    name: "Body Scan & Rest",
-    duration: 45,
-    speech: "Gently lower your arms and come back to centre. Place your hands on the floor behind you and slowly lean back, lowering yourself down onto your back. Let your legs extend long, feet falling open. Arms away from your body, palms up. Close your eyes. Scan through your body from your feet to the crown of your head. Wherever you notice tension, invite it to soften. Rest here. Breathing naturally. Just being.",
-    breath: "natural"
-  },
-  {
-    name: "Slowly Rising",
-    duration: 25,
-    speech: "Begin to wiggle your fingers and toes. Take a deeper breath in. Stretch your arms overhead. Draw your knees in toward your chest, roll to one side, and when you're ready, press yourself up to a seated position.",
-    breath: "natural"
-  },
-  {
-    name: "Closing",
-    duration: 15,
-    speech: "Bring your palms together at your heart. One final deep breath in. And let it go. Namaste.",
-    breath: "natural"
-  }
-];
+// ── Sequence ──
+// Loaded asynchronously from config/sequences/evening.json at page load.
+// Phase 2 of the refactor — see scratch/refactor-plan/05-migration-plan.md §2.
+// Phase 5 will move this fetch into js/sequence-loader.js with validation.
+let sequence = [];
 
 // ── State ──
 let currentStep = -1;
@@ -660,7 +499,7 @@ let stepTimer = null;
 let stepElapsed = 0;
 let totalElapsed = 0;
 let breathInterval = null;
-let totalDuration = sequence.reduce((s, p) => s + p.duration, 0);
+let totalDuration = 0;  // set after sequence JSON loads
 
 // ── Wake Lock ──
 // Phase 1 minimal fix (see scratch/refactor-plan/02-wake-lock-investigation.md):
@@ -940,8 +779,30 @@ function buildPreview() {
   container.innerHTML = html;
 }
 
-buildPreview();
-updateTime();
+// ── Init: load sequence JSON, then render the idle view ──
+// Phase 5 lifts this into js/sequence-loader.js and js/app.js. For now it's
+// an inline async IIFE so phase 2's diff stays small. The Begin button is
+// disabled until the fetch resolves — a real-device HTTPS fetch of a local
+// JSON file is nearly instant, but we should never let the user tap Begin
+// on an empty sequence.
+(async () => {
+  const btnStart = document.getElementById('btnStart');
+  btnStart.disabled = true;
+  try {
+    const response = await fetch('config/sequences/evening.json');
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    sequence = data.poses;
+    totalDuration = sequence.reduce((s, p) => s + p.duration, 0);
+    buildPreview();
+    updateTime();
+    btnStart.disabled = false;
+  } catch (err) {
+    console.error('Failed to load sequence:', err);
+    document.getElementById('poseListPreview').textContent =
+      'Failed to load sequence. Check the browser console.';
+  }
+})();
 </script>
 </body>
 </html>
