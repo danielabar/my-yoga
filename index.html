@@ -663,64 +663,49 @@ let breathInterval = null;
 let totalDuration = sequence.reduce((s, p) => s + p.duration, 0);
 
 // ── Wake Lock ──
+// Phase 1 minimal fix (see scratch/refactor-plan/02-wake-lock-investigation.md):
+//   - Audio-fallback path deleted (never worked; Web Audio requires user activation
+//     that the preceding awaited wakeLock.request() has already consumed)
+//   - release() is now awaited so the OS actually sees the explicit release
+//     before the tab suspends. This fixes the just-breathe leak (§2a).
+// Phase 5b will lift this into js/wake-lock.js as a proper module with pagehide
+// handling, split wantsLock/lock state, and unit tests.
 let wakeLockSentinel = null;
-let silentAudioCtx = null;
-let silentSource = null;
 const hasWakeLockAPI = 'wakeLock' in navigator;
 
 async function acquireWakeLock() {
   const toggle = document.getElementById('wakeLockToggle');
   if (!toggle.checked) return;
 
-  // Try native Wake Lock API first (requires HTTPS)
-  if (hasWakeLockAPI) {
-    try {
-      wakeLockSentinel = await navigator.wakeLock.request('screen');
-      wakeLockSentinel.addEventListener('release', () => {
-        // Re-acquire if session is still running (e.g. tab was hidden then shown)
-        if (isRunning && !isPaused && toggle.checked) {
-          acquireWakeLock();
-        }
-      });
-      document.getElementById('wakeLockHint').textContent = 'screen will stay awake';
-      return;
-    } catch (e) {
-      // Wake Lock failed (maybe not HTTPS), fall through to audio fallback
-    }
+  if (!hasWakeLockAPI) {
+    document.getElementById('wakeLockHint').textContent = 'wake lock not supported in this browser';
+    return;
   }
 
-  // Fallback: silent audio via Web Audio API
   try {
-    silentAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    // Create a 1-second silent buffer on loop
-    const buffer = silentAudioCtx.createBuffer(1, silentAudioCtx.sampleRate, silentAudioCtx.sampleRate);
-    silentSource = silentAudioCtx.createBufferSource();
-    silentSource.buffer = buffer;
-    silentSource.loop = true;
-    // Connect through a zero-gain node so it's truly silent
-    const gainNode = silentAudioCtx.createGain();
-    gainNode.gain.value = 0;
-    silentSource.connect(gainNode);
-    gainNode.connect(silentAudioCtx.destination);
-    silentSource.start();
-    document.getElementById('wakeLockHint').textContent = 'screen will stay awake (audio fallback)';
+    wakeLockSentinel = await navigator.wakeLock.request('screen');
+    wakeLockSentinel.addEventListener('release', () => {
+      // Re-acquire if the session is still running (e.g. tab was hidden then shown)
+      if (isRunning && !isPaused && toggle.checked) {
+        acquireWakeLock();
+      }
+    });
+    document.getElementById('wakeLockHint').textContent = 'screen will stay awake';
   } catch (e) {
-    document.getElementById('wakeLockHint').textContent = 'could not prevent sleep — adjust device settings';
+    // Most common cause: not a secure context. Wake Lock requires HTTPS or localhost.
+    document.getElementById('wakeLockHint').textContent = 'could not prevent sleep — needs HTTPS';
   }
 }
 
-function releaseWakeLock() {
+async function releaseWakeLock() {
   if (wakeLockSentinel) {
-    wakeLockSentinel.release();
+    const sentinel = wakeLockSentinel;
     wakeLockSentinel = null;
-  }
-  if (silentSource) {
-    try { silentSource.stop(); } catch (e) {}
-    silentSource = null;
-  }
-  if (silentAudioCtx) {
-    try { silentAudioCtx.close(); } catch (e) {}
-    silentAudioCtx = null;
+    try {
+      await sentinel.release();
+    } catch (e) {
+      // Already released or never held — ignore.
+    }
   }
   document.getElementById('wakeLockHint').textContent = 'prevents sleep during session';
 }
@@ -834,7 +819,7 @@ function showPose(step) {
 // ── Sequence runner ──
 async function runStep(step) {
   if (step >= sequence.length) {
-    finish();
+    await finish();
     return;
   }
   currentStep = step;
@@ -875,16 +860,16 @@ async function runSequence() {
     if (!isRunning) break;
     await runStep(i);
   }
-  if (isRunning) finish();
+  if (isRunning) await finish();
 }
 
-function finish() {
+async function finish() {
   isRunning = false;
   isPaused = false;
   stopBreathCycle();
   synth.cancel();
   clearInterval(stepTimer);
-  releaseWakeLock();
+  await releaseWakeLock();
   document.getElementById('poseCard').style.display = 'none';
   document.getElementById('upNext').style.display = 'none';
   document.getElementById('idleView').style.display = 'none';
@@ -923,13 +908,13 @@ document.getElementById('btnPause').addEventListener('click', () => {
   }
 });
 
-document.getElementById('btnStop').addEventListener('click', () => {
+document.getElementById('btnStop').addEventListener('click', async () => {
   isRunning = false;
   isPaused = false;
   synth.cancel();
   clearInterval(stepTimer);
   stopBreathCycle();
-  releaseWakeLock();
+  await releaseWakeLock();
   document.getElementById('poseCard').style.display = 'none';
   document.getElementById('upNext').style.display = 'none';
   document.getElementById('idleView').style.display = '';

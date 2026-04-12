@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting…</title>
+  <script>
+    // Phase 1: minimal SPA 404 fallback for GitHub Pages. Any unknown path
+    // redirects back to the app root. Phase 5 will rewrite this file to
+    // import `js/base-path.js`, store the intended path in sessionStorage,
+    // and let the pushState router honour deep links (e.g. /about).
+    // See scratch/refactor-plan/05-migration-plan.md §5f.
+    const repoName = "my-yoga";
+    const segments = location.pathname.split("/").filter(Boolean);
+    const basePath = segments[0] === repoName ? "/" + repoName + "/" : "/";
+    location.replace(basePath);
+  </script>
+</head>
+<body></body>
+</html>
