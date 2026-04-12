@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Important
+
+Research the codebase before editing. Never change code you haven't read.
+
 ## Project
 
 A guided evening yoga web app — vanilla HTML, CSS, and JavaScript with no build system or bundler. Deployed to GitHub Pages via `actions/deploy-pages`.

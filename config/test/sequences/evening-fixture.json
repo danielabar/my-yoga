@@ -5,21 +5,21 @@
     {
       "id": "test-arrive",
       "name": "Arriving",
-      "duration": 20,
+      "holdSeconds": 10,
       "breath": "slow",
       "speech": "Welcome. Find a comfortable seated position."
     },
     {
       "id": "test-breath",
       "name": "Deep Breathing",
-      "duration": 30,
+      "holdSeconds": 15,
       "breath": "guided",
       "speech": "Inhale slowly. Exhale slowly."
     },
     {
       "id": "test-rest",
       "name": "Final Rest",
-      "duration": 15,
+      "holdSeconds": 8,
       "breath": "natural",
       "speech": "Rest here. Breathing naturally."
     }

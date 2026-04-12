@@ -63,10 +63,9 @@ export function startSession({ sequence, els, totalDuration, voiceOpts, onDone, 
     await speak(pose.speech, voiceOpts);
     if (aborted) return;
 
-    // Hold timer: wait the full duration. Speech time counts toward it, but
-    // we ensure at least a few seconds of breathing after speech ends.
+    // Hold after speech: wait exactly holdSeconds (authored per-pose).
     let waited = 0;
-    const holdTime = Math.max(pose.duration * 1000, 5000);
+    const holdTime = pose.holdSeconds * 1000;
 
     await new Promise((resolve) => {
       stepTimer = setInterval(() => {

@@ -26,8 +26,8 @@ let activeSession = null;
 function buildPreview(container, poses) {
   let html = "<h3>Sequence</h3>";
   for (const p of poses) {
-    const mins = p.duration >= 60 ? `${Math.floor(p.duration / 60)}m` : "";
-    const secs = p.duration % 60 > 0 ? `${p.duration % 60}s` : "";
+    const mins = p.holdSeconds >= 60 ? `${Math.floor(p.holdSeconds / 60)}m` : "";
+    const secs = p.holdSeconds % 60 > 0 ? `${p.holdSeconds % 60}s` : "";
     html += `<div class="pose-list-item"><span class="pose-list-item__name">${p.name}</span><span class="pose-list-item__dur">${mins}${mins && secs ? " " : ""}${secs}</span></div>`;
   }
   container.innerHTML = html;
@@ -92,7 +92,7 @@ export async function init(contentEl, html) {
   try {
     const data = await loadSequence(`${basePath}config/sequences/${name}.json`);
     sequence = data.poses;
-    totalDuration = sequence.reduce((s, p) => s + p.duration, 0);
+    totalDuration = sequence.reduce((s, p) => s + p.holdSeconds, 0);
     buildPreview(document.getElementById("poseListPreview"), sequence);
     els.progress.time.textContent = `${formatTime(0)} / ${formatTime(totalDuration)}`;
     btnStart.disabled = false;
