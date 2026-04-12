@@ -58,7 +58,7 @@
   }
 
   .setting-row input[type="range"] {
-    width: 100px;
+    width: 120px;
     accent-color: var(--color-accent-warm);
   }
 

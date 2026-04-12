@@ -12,6 +12,7 @@
     font-size: 0.9rem;
     letter-spacing: 0.06em;
     padding: 12px 32px;
+    min-height: 44px;
     border-radius: var(--radius-pill);
     border: none;
     cursor: pointer;

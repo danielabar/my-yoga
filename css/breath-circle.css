@@ -39,4 +39,17 @@
     transform: scale(1);
     box-shadow: 0 0 10px var(--color-breath-glow-soft);
   }
+
+  @media (max-width: 390px) {
+    .breath-container {
+      height: 150px;
+      margin: 20px 0;
+    }
+
+    .breath-circle {
+      width: 100px;
+      height: 100px;
+      font-size: 1rem;
+    }
+  }
 }
