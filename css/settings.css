@@ -62,6 +62,23 @@
     accent-color: var(--color-accent-warm);
   }
 
+  .setting-row--reset {
+    justify-content: flex-end;
+    margin-bottom: 0;
+  }
+
+  .settings__reset {
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .settings__reset:hover {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+  }
+
   /*
    * Wake-lock toggle — temporary. The wake-lock toggle has been dropped as
    * a user control (decision captured in 03-technical-decisions.md §"Wake

@@ -25,12 +25,12 @@ import { updateProgress } from "./ui/progress.js";
  * @param {Array} opts.sequence — the poses array
  * @param {object} opts.els — DOM element refs (see practice view for shape)
  * @param {number} opts.totalDuration — sum of all pose durations in seconds
- * @param {object} opts.voiceOpts — { voice, rate, pitch } for speech
+ * @param {function} opts.getVoiceOpts — returns { voice, rate, pitch } for speech
  * @param {function} opts.onDone — called with { completed: boolean } when session ends
  * @param {number} [opts.startIndex=0] — which pose to begin at
  * @returns {{ stop: () => Promise<void> }}
  */
-export function startSession({ sequence, els, totalDuration, voiceOpts, onDone, startIndex = 0 }) {
+export function startSession({ sequence, els, totalDuration, getVoiceOpts, onDone, startIndex = 0 }) {
   let aborted = false;
   let stepTimer = null;
   let totalElapsed = 0;
@@ -60,7 +60,7 @@ export function startSession({ sequence, els, totalDuration, voiceOpts, onDone, 
     renderPoseCard(els.poseCard, pose, step, sequence.length, nextPose);
     startBreathCycle(els.breathCircle, pose.breath);
 
-    await speak(pose.speech, voiceOpts);
+    await speak(pose.speech, getVoiceOpts());
     if (aborted) return;
 
     // Hold after speech: wait exactly holdSeconds (authored per-pose).
