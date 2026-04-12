@@ -1,0 +1,7 @@
+/*
+ * About view styles. Empty in phase 4 — the about view itself lands in
+ * phase 6 (see scratch/refactor-plan/05-migration-plan.md §6).
+ */
+@layer components {
+  /* (empty — see header comment) */
+}

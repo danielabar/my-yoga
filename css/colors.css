@@ -1,0 +1,49 @@
+/*
+ * Color system.
+ * Mood: calm, grounded, twilight — warm accents against a deep cool background.
+ * Primitives live as OKLCH triples; semantic tokens wrap them in oklch().
+ *
+ * Primitives regenerated via `node scripts/hex-to-oklch.js`. When the palette
+ * changes, update the `colors` object in that script and paste the output back
+ * here — the hex values in the trailing comments are the original sRGB
+ * literals from the pre-refactor inline <style> block.
+ *
+ * Reference: https://oklch.com/
+ */
+:root {
+  /* LCH color primitives */
+  --lch-bg-deep: 21.9% 0.043 261.6;         /* was #0f1a2e */
+  --lch-bg-mid: 25.8% 0.059 266.0;          /* was #162240 */
+  --lch-text-primary: 90.3% 0.021 72.1;     /* was #e8ddd0 */
+  --lch-text-secondary: 68.5% 0.043 258.8;  /* was #8a9bb5 */
+  --lch-text-dim: 49.9% 0.050 263.3;        /* was #546380 */
+  --lch-accent-warm: 75.4% 0.085 67.1;      /* was #d4a574 */
+  --lch-accent-glow: 85.2% 0.064 74.5;      /* was #e8c9a0 */
+  --lch-accent-breath: 70.3% 0.064 240.8;   /* was #7ba5c4 */
+
+  /* Semantic surfaces */
+  --color-bg-deep: oklch(var(--lch-bg-deep));
+  --color-bg-mid: oklch(var(--lch-bg-mid));
+  --color-bg-card: oklch(100% 0 0 / 0.04);
+  --color-border: oklch(100% 0 0 / 0.06);
+  --color-shadow: oklch(0% 0 0 / 0.3);
+
+  /* Text */
+  --color-text: oklch(var(--lch-text-primary));
+  --color-text-secondary: oklch(var(--lch-text-secondary));
+  --color-text-dim: oklch(var(--lch-text-dim));
+
+  /* Accents */
+  --color-accent-warm: oklch(var(--lch-accent-warm));
+  --color-accent-glow: oklch(var(--lch-accent-glow));
+  --color-accent-breath: oklch(var(--lch-accent-breath));
+
+  /* Translucent accents (for glows, gradients, focus states) */
+  --color-breath-glow-strong: oklch(var(--lch-accent-breath) / 0.15);
+  --color-breath-glow-soft: oklch(var(--lch-accent-breath) / 0.05);
+  --color-breath-tint: oklch(var(--lch-accent-breath) / 0.03);
+  --color-breath-gradient: oklch(var(--lch-accent-breath) / 0.08);
+  --color-warm-gradient: oklch(var(--lch-accent-warm) / 0.06);
+  --color-warm-glow: oklch(var(--lch-accent-warm) / 0.3);
+  --color-warm-tint: oklch(var(--lch-accent-warm) / 0.2);
+}

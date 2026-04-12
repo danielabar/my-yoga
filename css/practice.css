@@ -1,0 +1,62 @@
+@layer components {
+  .idle-message {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    padding: 20px 0;
+  }
+
+  .pose-list-preview {
+    margin-top: 24px;
+  }
+
+  .pose-list-preview h3 {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-dim);
+    margin-bottom: 12px;
+    text-align: center;
+    font-family: var(--font-sans);
+    font-weight: 400;
+  }
+
+  .pose-list-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.85rem;
+  }
+
+  .pose-list-item__name {
+    color: var(--color-text-secondary);
+  }
+
+  .pose-list-item__dur {
+    color: var(--color-text-dim);
+    font-size: 0.78rem;
+  }
+
+  .completed-msg {
+    text-align: center;
+    padding: 30px 0;
+  }
+
+  .completed-msg h2 {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: 1.8rem;
+    color: var(--color-accent-glow);
+    margin-bottom: 10px;
+  }
+
+  .completed-msg p {
+    font-weight: 300;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+  }
+}

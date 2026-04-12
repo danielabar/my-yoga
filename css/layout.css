@@ -1,0 +1,28 @@
+@layer components {
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+  }
+
+  .app-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .app-header__title {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: 2.4rem;
+    letter-spacing: 0.02em;
+    color: var(--color-accent-glow);
+    margin-bottom: 6px;
+  }
+
+  .app-header__subtitle {
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.05em;
+  }
+}

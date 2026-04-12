@@ -1,0 +1,12 @@
+/*
+ * Nav is intentionally empty in phase 4 — the original index.html has no
+ * navigation element. Phase 5f adds a pushState router and phase 6 adds the
+ * About view, at which point this file will pick up:
+ *   - `.top-nav` for desktop (>= 769px)
+ *   - `.tab-bar` for mobile (<= 768px)
+ * with a media-query swap. That's the explicit deviation from charity calc
+ * documented in scratch/refactor-plan/03-technical-decisions.md §"Navigation".
+ */
+@layer components {
+  /* (empty — see header comment) */
+}

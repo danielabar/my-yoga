@@ -1,0 +1,136 @@
+/*
+ * Voice/rate/pitch settings disclosure. The wake-lock toggle that was here
+ * in the original index.html has been removed (phase 1 + phase 7b — see
+ * scratch/refactor-plan/03-technical-decisions.md §"Wake lock toggle").
+ *
+ * Phase 7c populates this file when the settings disclosure lands as its
+ * own component with localStorage-backed persistence. For now we keep the
+ * original styles verbatim so phase 4 is pure extraction with zero visual
+ * change.
+ */
+@layer components {
+  .settings {
+    margin-top: 28px;
+    padding: 20px;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+  }
+
+  .settings summary {
+    font-size: 0.8rem;
+    color: var(--color-text-dim);
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    text-transform: uppercase;
+    list-style: none;
+  }
+
+  .settings summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .settings__inner {
+    margin-top: 16px;
+  }
+
+  .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .setting-row label {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+  }
+
+  .setting-row select,
+  .setting-row input[type="range"] {
+    background: var(--color-bg-mid);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 0.82rem;
+    font-family: var(--font-sans);
+  }
+
+  .setting-row input[type="range"] {
+    width: 100px;
+    accent-color: var(--color-accent-warm);
+  }
+
+  /*
+   * Wake-lock toggle — temporary. The wake-lock toggle has been dropped as
+   * a user control (decision captured in 03-technical-decisions.md §"Wake
+   * lock toggle"), but the HTML + CSS are still in index.html because the
+   * cleanup lands in phase 7b alongside the pause-removal sweep. Once the
+   * toggle is deleted from index.html, remove everything between this
+   * comment and the matching closing comment below.
+   */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .toggle-row label {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+  }
+
+  .toggle-row .toggle-hint {
+    font-size: 0.72rem;
+    color: var(--color-text-dim);
+    margin-top: 2px;
+  }
+
+  .toggle-switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--color-bg-mid);
+    border: 1px solid var(--color-border);
+    border-radius: 24px;
+    transition: 0.25s ease;
+  }
+
+  .toggle-slider::before {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 2px;
+    bottom: 2px;
+    background: var(--color-text-dim);
+    border-radius: 50%;
+    transition: 0.25s ease;
+  }
+
+  .toggle-switch input:checked + .toggle-slider {
+    background: var(--color-warm-tint);
+    border-color: var(--color-accent-warm);
+  }
+
+  .toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(20px);
+    background: var(--color-accent-warm);
+  }
+  /* END wake-lock toggle temporary styles — see comment above */
+}

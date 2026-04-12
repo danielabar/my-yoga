@@ -1,0 +1,25 @@
+@layer components {
+  .progress-bar-container {
+    margin: 24px 0;
+    background: var(--color-border);
+    border-radius: var(--radius-pill);
+    height: 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent-breath), var(--color-accent-warm));
+    border-radius: var(--radius-pill);
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+
+  .time-display {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--color-text-dim);
+    margin-bottom: 30px;
+    letter-spacing: 0.08em;
+  }
+}

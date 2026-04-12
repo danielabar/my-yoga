@@ -1,0 +1,22 @@
+@layer reset, base, components, utilities;
+
+:root {
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* Text */
+  --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-sans: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Borders */
+  --radius: 16px;
+  --radius-pill: 100px;
+
+  /* Layout */
+  --max-width: 520px;
+}

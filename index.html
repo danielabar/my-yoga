@@ -4,416 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Evening Gentle Yoga</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Nunito:wght@300;400;600&display=swap');
-
-  :root {
-    --bg-deep: #0f1a2e;
-    --bg-mid: #162240;
-    --bg-card: rgba(255,255,255,0.04);
-    --text-primary: #e8ddd0;
-    --text-secondary: #8a9bb5;
-    --text-dim: #546380;
-    --accent-warm: #d4a574;
-    --accent-glow: #e8c9a0;
-    --accent-breath: #7ba5c4;
-    --border-subtle: rgba(255,255,255,0.06);
-    --shadow-soft: 0 8px 32px rgba(0,0,0,0.3);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--bg-deep);
-    color: var(--text-primary);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* Gradient background */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background:
-      radial-gradient(ellipse at 20% 0%, rgba(123,165,196,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 100%, rgba(212,165,116,0.06) 0%, transparent 50%),
-      linear-gradient(170deg, var(--bg-deep) 0%, var(--bg-mid) 100%);
-    z-index: -1;
-  }
-
-  .container {
-    max-width: 520px;
-    margin: 0 auto;
-    padding: 40px 24px 60px;
-  }
-
-  header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-
-  header h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: 2.4rem;
-    letter-spacing: 0.02em;
-    color: var(--accent-glow);
-    margin-bottom: 6px;
-  }
-
-  header p {
-    font-weight: 300;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    letter-spacing: 0.05em;
-  }
-
-  /* Breath circle */
-  .breath-container {
-    display: flex;
-    justify-content: center;
-    margin: 30px 0;
-    position: relative;
-    height: 180px;
-    align-items: center;
-  }
-
-  .breath-circle {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    border: 1.5px solid var(--accent-breath);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    font-style: italic;
-    color: var(--accent-breath);
-    transition: transform 4s ease-in-out, box-shadow 4s ease-in-out;
-    background: rgba(123,165,196,0.03);
-  }
-
-  .breath-circle.inhale {
-    transform: scale(1.35);
-    box-shadow: 0 0 40px rgba(123,165,196,0.15);
-  }
-
-  .breath-circle.exhale {
-    transform: scale(1);
-    box-shadow: 0 0 10px rgba(123,165,196,0.05);
-  }
-
-  /* Progress */
-  .progress-bar-container {
-    margin: 24px 0;
-    background: var(--border-subtle);
-    border-radius: 100px;
-    height: 4px;
-    overflow: hidden;
-  }
-
-  .progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent-breath), var(--accent-warm));
-    border-radius: 100px;
-    width: 0%;
-    transition: width 0.5s ease;
-  }
-
-  .time-display {
-    text-align: center;
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    margin-bottom: 30px;
-    letter-spacing: 0.08em;
-  }
-
-  /* Current pose card */
-  .pose-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 16px;
-    padding: 28px 24px;
-    margin-bottom: 20px;
-    box-shadow: var(--shadow-soft);
-    backdrop-filter: blur(8px);
-    min-height: 160px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    transition: opacity 0.5s ease;
-  }
-
-  .pose-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--accent-warm);
-    margin-bottom: 10px;
-  }
-
-  .pose-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    font-weight: 400;
-    color: var(--text-primary);
-    margin-bottom: 12px;
-  }
-
-  .pose-instruction {
-    font-weight: 300;
-    font-size: 0.92rem;
-    line-height: 1.65;
-    color: var(--text-secondary);
-  }
-
-  .pose-timer {
-    margin-top: 14px;
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    letter-spacing: 0.05em;
-  }
-
-  /* Controls */
-  .controls {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin-top: 30px;
-  }
-
-  .btn {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 400;
-    font-size: 0.9rem;
-    letter-spacing: 0.06em;
-    padding: 12px 32px;
-    border-radius: 100px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.25s ease;
-  }
-
-  .btn-primary {
-    background: linear-gradient(135deg, var(--accent-warm), var(--accent-glow));
-    color: var(--bg-deep);
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 20px rgba(212,165,116,0.3);
-  }
-
-  .btn-secondary {
-    background: var(--bg-card);
-    color: var(--text-secondary);
-    border: 1px solid var(--border-subtle);
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--accent-breath);
-    color: var(--accent-breath);
-  }
-
-  .btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    transform: none !important;
-    box-shadow: none !important;
-  }
-
-  /* Voice settings */
-  .settings {
-    margin-top: 28px;
-    padding: 20px;
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 12px;
-  }
-
-  .settings summary {
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    text-transform: uppercase;
-    list-style: none;
-  }
-
-  .settings summary::-webkit-details-marker { display: none; }
-
-  .settings-inner {
-    margin-top: 16px;
-  }
-
-  .setting-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-
-  .setting-row label {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-  }
-
-  .setting-row select,
-  .setting-row input[type="range"] {
-    background: var(--bg-mid);
-    color: var(--text-primary);
-    border: 1px solid var(--border-subtle);
-    border-radius: 6px;
-    padding: 4px 8px;
-    font-size: 0.82rem;
-    font-family: 'Nunito', sans-serif;
-  }
-
-  input[type="range"] {
-    width: 100px;
-    accent-color: var(--accent-warm);
-  }
-
-  /* Up next */
-  .up-next {
-    margin-top: 16px;
-    font-size: 0.78rem;
-    color: var(--text-dim);
-    text-align: center;
-    letter-spacing: 0.04em;
-  }
-
-  .up-next span {
-    color: var(--text-secondary);
-  }
-
-  /* Idle state */
-  .idle-message {
-    text-align: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.15rem;
-    font-style: italic;
-    color: var(--text-secondary);
-    line-height: 1.7;
-    padding: 20px 0;
-  }
-
-  .pose-list-preview {
-    margin-top: 24px;
-  }
-
-  .pose-list-preview h3 {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--text-dim);
-    margin-bottom: 12px;
-    text-align: center;
-  }
-
-  .pose-list-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border-subtle);
-    font-size: 0.85rem;
-  }
-
-  .pose-list-item .name { color: var(--text-secondary); }
-  .pose-list-item .dur { color: var(--text-dim); font-size: 0.78rem; }
-
-  .completed-msg {
-    text-align: center;
-    padding: 30px 0;
-  }
-
-  .completed-msg h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-size: 1.8rem;
-    color: var(--accent-glow);
-    margin-bottom: 10px;
-  }
-
-  .completed-msg p {
-    font-weight: 300;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-  }
-
-  /* Wake lock toggle */
-  .toggle-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-
-  .toggle-row label {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-  }
-
-  .toggle-row .toggle-hint {
-    font-size: 0.72rem;
-    color: var(--text-dim);
-    margin-top: 2px;
-  }
-
-  .toggle-switch {
-    position: relative;
-    width: 44px;
-    height: 24px;
-    flex-shrink: 0;
-  }
-
-  .toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  .toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--bg-mid);
-    border: 1px solid var(--border-subtle);
-    border-radius: 24px;
-    transition: 0.25s ease;
-  }
-
-  .toggle-slider::before {
-    content: '';
-    position: absolute;
-    height: 18px;
-    width: 18px;
-    left: 2px;
-    bottom: 2px;
-    background: var(--text-dim);
-    border-radius: 50%;
-    transition: 0.25s ease;
-  }
-
-  .toggle-switch input:checked + .toggle-slider {
-    background: rgba(212,165,116,0.2);
-    border-color: var(--accent-warm);
-  }
-
-  .toggle-switch input:checked + .toggle-slider::before {
-    transform: translateX(20px);
-    background: var(--accent-warm);
-  }
-</style>
+<link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
 <div class="container">
-  <header>
-    <h1>Evening Gentle Yoga</h1>
-    <p>stretching &amp; breathing · ~16 minutes</p>
+  <header class="app-header">
+    <h1 class="app-header__title">Evening Gentle Yoga</h1>
+    <p class="app-header__subtitle">stretching &amp; breathing · ~16 minutes</p>
   </header>
 
   <div class="breath-container">
@@ -427,10 +24,10 @@
 
   <div id="mainContent">
     <div class="pose-card" id="poseCard" style="display:none;">
-      <div class="pose-label" id="poseLabel">current pose</div>
-      <div class="pose-name" id="poseName"></div>
-      <div class="pose-instruction" id="poseInstruction"></div>
-      <div class="pose-timer" id="poseTimer"></div>
+      <div class="pose-card__label" id="poseLabel">current pose</div>
+      <div class="pose-card__name" id="poseName"></div>
+      <div class="pose-card__instruction" id="poseInstruction"></div>
+      <div class="pose-card__timer" id="poseTimer"></div>
     </div>
     <div class="up-next" id="upNext" style="display:none;">
       up next: <span id="upNextName"></span>
@@ -450,14 +47,14 @@
   </div>
 
   <div class="controls">
-    <button class="btn btn-primary" id="btnStart">Begin</button>
-    <button class="btn btn-secondary" id="btnPause" style="display:none;">Pause</button>
-    <button class="btn btn-secondary" id="btnStop" style="display:none;">Stop</button>
+    <button class="btn btn--primary" id="btnStart">Begin</button>
+    <button class="btn btn--secondary" id="btnPause" style="display:none;">Pause</button>
+    <button class="btn btn--secondary" id="btnStop" style="display:none;">Stop</button>
   </div>
 
   <details class="settings">
     <summary>voice &amp; speed settings</summary>
-    <div class="settings-inner">
+    <div class="settings__inner">
       <div class="toggle-row">
         <div>
           <label>Keep screen awake</label>
@@ -607,10 +204,10 @@ function startBreathCycle(type) {
   let inhaling = true;
   function cycle() {
     if (inhaling) {
-      circle.className = 'breath-circle inhale';
+      circle.className = 'breath-circle breath-circle--inhale';
       circle.textContent = 'inhale';
     } else {
-      circle.className = 'breath-circle exhale';
+      circle.className = 'breath-circle breath-circle--exhale';
       circle.textContent = 'exhale';
     }
     inhaling = !inhaling;
@@ -774,7 +371,7 @@ function buildPreview() {
   sequence.forEach(p => {
     const mins = p.duration >= 60 ? `${Math.floor(p.duration/60)}m` : '';
     const secs = p.duration % 60 > 0 ? `${p.duration % 60}s` : '';
-    html += `<div class="pose-list-item"><span class="name">${p.name}</span><span class="dur">${mins}${mins && secs ? ' ' : ''}${secs}</span></div>`;
+    html += `<div class="pose-list-item"><span class="pose-list-item__name">${p.name}</span><span class="pose-list-item__dur">${mins}${mins && secs ? ' ' : ''}${secs}</span></div>`;
   });
   container.innerHTML = html;
 }

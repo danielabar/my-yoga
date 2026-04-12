@@ -1,0 +1,42 @@
+/*
+ * @keyframes must live outside @layer — Chromium has historically had
+ * cascade-layer bugs where keyframes inside a layer aren't applied. Safe
+ * default: keep them at the top level.
+ */
+
+@layer components {
+  .breath-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+    position: relative;
+    height: 180px;
+    align-items: center;
+  }
+
+  .breath-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-accent-breath);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--color-accent-breath);
+    transition: transform 4s ease-in-out, box-shadow 4s ease-in-out;
+    background: var(--color-breath-tint);
+  }
+
+  .breath-circle--inhale {
+    transform: scale(1.35);
+    box-shadow: 0 0 40px var(--color-breath-glow-strong);
+  }
+
+  .breath-circle--exhale {
+    transform: scale(1);
+    box-shadow: 0 0 10px var(--color-breath-glow-soft);
+  }
+}
