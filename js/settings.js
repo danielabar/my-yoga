@@ -1,11 +1,19 @@
 /**
- * Persisted settings module.
+ * Persisted user settings — voice, speech rate, and pitch.
  *
- * One key in localStorage, one JSON blob, validation on every read.
- * Degrades to in-memory-only when storage is unavailable (Safari
- * private browsing, quota errors).
+ * Stores a single JSON blob in localStorage under a namespaced,
+ * versioned key so it won't collide with other GitHub Pages apps on
+ * the same origin. Every read validates each field against the SCHEMA;
+ * missing, malformed, or out-of-range values silently fall back to
+ * their defaults. All localStorage access is wrapped in try/catch so
+ * the module degrades to in-memory-only when storage is unavailable
+ * (Safari private browsing, quota errors).
  *
- * Design: scratch/refactor-plan/05-migration-plan.md §7c
+ * Exports:
+ *   get(key)        → value for a single setting
+ *   getAll()        → shallow copy of all settings
+ *   set(key, value) → validate, cache, and persist one setting
+ *   reset()         → clear storage and cache, revert to defaults
  */
 
 const STORAGE_KEY = "myYoga:settings:v1";

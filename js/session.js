@@ -1,15 +1,16 @@
 /**
- * Session orchestrator.
+ * Session orchestrator — runs a yoga practice from first pose to last.
  *
  * Wires together: wake-lock, voice, breath-circle, pose-card, progress.
- * All state lives inside the startSession closure — no module-level lets.
+ * All mutable state lives inside the startSession closure so multiple
+ * sessions can't interfere with each other.
+ *
+ * The caller provides a getVoiceOpts function (not a static object) so
+ * voice/rate/pitch changes made mid-session take effect on the next pose.
  *
  * Usage:
- *   const { stop } = startSession({ sequence, els, totalDuration, onDone });
+ *   const { stop } = startSession({ sequence, els, totalDuration, getVoiceOpts, onDone });
  *   // user taps Stop → await stop()
- *
- * Design: scratch/refactor-plan/05-migration-plan.md §5e
- * Wake-lock integration: scratch/refactor-plan/02-wake-lock-investigation.md
  */
 
 import { acquire as acquireWakeLock, release as releaseWakeLock } from "./wake-lock.js";
