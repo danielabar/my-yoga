@@ -9,6 +9,8 @@
  *   cancel()               → cancel any in-flight utterance
  */
 
+import { get as getSetting } from "./settings.js";
+
 const synth = typeof speechSynthesis !== "undefined" ? speechSynthesis : null;
 let voices = [];
 
@@ -60,7 +62,7 @@ export function pickDefaultVoice(list) {
  * @param {string} text
  * @param {{voice?: SpeechSynthesisVoice, rate?: number, pitch?: number}} opts
  */
-export function speak(text, { voice = null, rate = 0.85, pitch = 1.0 } = {}) {
+export function speak(text, { voice = null, rate, pitch } = {}) {
   return new Promise((resolve) => {
     if (!synth) {
       resolve();
@@ -69,8 +71,8 @@ export function speak(text, { voice = null, rate = 0.85, pitch = 1.0 } = {}) {
     synth.cancel();
     const utt = new SpeechSynthesisUtterance(text);
     if (voice) utt.voice = voice;
-    utt.rate = rate;
-    utt.pitch = pitch;
+    utt.rate = rate ?? getSetting("rate");
+    utt.pitch = pitch ?? getSetting("pitch");
     utt.onend = resolve;
     utt.onerror = resolve;
     synth.speak(utt);

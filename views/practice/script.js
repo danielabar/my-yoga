@@ -17,6 +17,11 @@ import {
   onVoicesChanged,
   cancel as cancelVoice,
 } from "../../js/voice.js";
+import {
+  get as getSetting,
+  set as setSetting,
+  reset as resetSettings,
+} from "../../js/settings.js";
 
 let activeSession = null;
 
@@ -34,7 +39,8 @@ function buildPreview(container, poses) {
 }
 
 /**
- * Populate the voice <select> with the available English voices.
+ * Populate the voice <select> with the available English voices,
+ * then restore the persisted voice (if it still exists on this device).
  */
 function populateVoiceSelect(selectEl, voiceList) {
   selectEl.innerHTML = "";
@@ -45,10 +51,20 @@ function populateVoiceSelect(selectEl, voiceList) {
     opt.textContent = `${v.name} (${v.lang})`;
     selectEl.appendChild(opt);
   }
-  // Auto-select a preferred voice
-  const preferred = pickDefaultVoice(voiceList);
-  if (preferred) {
-    selectEl.value = String(allVoices.indexOf(preferred));
+
+  const savedURI = getSetting("voiceURI");
+  const savedVoice = savedURI
+    ? allVoices.find((v) => v.voiceURI === savedURI)
+    : null;
+
+  if (savedVoice) {
+    selectEl.value = String(allVoices.indexOf(savedVoice));
+  } else {
+    const preferred = pickDefaultVoice(voiceList);
+    if (preferred) {
+      selectEl.value = String(allVoices.indexOf(preferred));
+    }
+    if (savedURI) setSetting("voiceURI", null);
   }
 }
 
@@ -84,6 +100,32 @@ export async function init(contentEl, html) {
   populateVoiceSelect(voiceSelect, initialVoices);
   onVoicesChanged((updatedVoices) => populateVoiceSelect(voiceSelect, updatedVoices));
 
+  // ── Restore persisted slider values ──
+  rateSlider.value = getSetting("rate");
+  pitchSlider.value = getSetting("pitch");
+
+  // ── Persist on change ──
+  voiceSelect.addEventListener("change", () => {
+    const v = getAllVoices()[voiceSelect.value];
+    setSetting("voiceURI", v ? v.voiceURI : null);
+  });
+  rateSlider.addEventListener("input", () => {
+    setSetting("rate", parseFloat(rateSlider.value));
+  });
+  pitchSlider.addEventListener("input", () => {
+    setSetting("pitch", parseFloat(pitchSlider.value));
+  });
+
+  // ── Reset to defaults ──
+  const resetBtn = document.getElementById("settingsReset");
+  resetBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    resetSettings();
+    rateSlider.value = getSetting("rate");
+    pitchSlider.value = getSetting("pitch");
+    populateVoiceSelect(voiceSelect, getVoices());
+  });
+
   // ── Load sequence ──
   btnStart.disabled = true;
   const name = new URLSearchParams(location.search).get("sequence") || "evening";
@@ -107,15 +149,9 @@ export async function init(contentEl, html) {
   btnStart.addEventListener("click", () => {
     if (activeSession) return;
 
-    const allVoices = getAllVoices();
-    const voiceOpts = {
-      voice: allVoices[voiceSelect.value] || null,
-      rate: parseFloat(rateSlider.value),
-      pitch: parseFloat(pitchSlider.value),
-    };
-
     document.getElementById("idleView").style.display = "none";
     document.getElementById("completedView").style.display = "none";
+    document.querySelector(".settings").open = false;
     btnStart.style.display = "none";
     btnStop.style.display = "";
 
@@ -123,7 +159,14 @@ export async function init(contentEl, html) {
       sequence,
       els: { breathCircle: els.breathCircle, poseCard: els.poseCard, progress: els.progress },
       totalDuration,
-      voiceOpts,
+      getVoiceOpts: () => {
+        const allVoices = getAllVoices();
+        return {
+          voice: allVoices[voiceSelect.value] || null,
+          rate: parseFloat(rateSlider.value),
+          pitch: parseFloat(pitchSlider.value),
+        };
+      },
       onDone({ completed }) {
         activeSession = null;
         if (completed) {
