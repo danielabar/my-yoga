@@ -1,7 +1,42 @@
-/*
- * About view styles. Empty in phase 4 — the about view itself lands in
- * phase 6 (see scratch/refactor-plan/05-migration-plan.md §6).
- */
 @layer components {
-  /* (empty — see header comment) */
+  .about-page h1 {
+    font-size: 2rem;
+    color: var(--color-accent-glow);
+    margin-bottom: var(--space-sm);
+  }
+
+  .about-page > p:first-of-type {
+    font-size: 1.05rem;
+    color: var(--color-text-secondary);
+    font-style: italic;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .about-page h2 {
+    font-size: 1.3rem;
+    color: var(--color-accent-glow);
+    margin-top: var(--space-2xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .about-page p {
+    font-weight: 300;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-md);
+  }
+
+  .about-page a {
+    color: var(--color-accent-warm);
+    text-decoration: underline;
+    text-decoration-color: oklch(var(--lch-accent-warm) / 0.4);
+    text-underline-offset: 3px;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  }
+
+  .about-page a:hover {
+    color: var(--color-accent-glow);
+    text-decoration-color: var(--color-accent-glow);
+  }
 }
