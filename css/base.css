@@ -6,8 +6,7 @@
  *
  * Only the weights actually used are declared. Self-hosted TTFs live in
  * `fonts/` — never load from fonts.googleapis.com (privacy, offline support,
- * no layout shift). See scratch/refactor-plan/03-technical-decisions.md
- * §"Typography & fonts — self-host" for the rationale.
+ * no layout shift).
  */
 
 @font-face {
