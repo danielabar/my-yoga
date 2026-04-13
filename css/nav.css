@@ -1,9 +1,5 @@
 /*
  * Navigation links in the app header.
- *
- * Phase 6 will add the desktop `.top-nav` / mobile `.tab-bar` breakpoint
- * swap described in 03-technical-decisions.md §"Navigation". For now the
- * nav lives inside the header as a simple inline link row.
  */
 @layer components {
   .app-header nav {

@@ -1,12 +1,6 @@
 /*
- * Voice/rate/pitch settings disclosure. The wake-lock toggle that was here
- * in the original index.html has been removed (phase 1 + phase 7b — see
- * scratch/refactor-plan/03-technical-decisions.md §"Wake lock toggle").
- *
- * Phase 7c populates this file when the settings disclosure lands as its
- * own component with localStorage-backed persistence. For now we keep the
- * original styles verbatim so phase 4 is pure extraction with zero visual
- * change.
+ * Voice/rate/pitch settings disclosure.
+ * Settings persist to localStorage via js/settings.js.
  */
 @layer components {
   .settings {
@@ -86,12 +80,9 @@
   }
 
   /*
-   * Wake-lock toggle — temporary. The wake-lock toggle has been dropped as
-   * a user control (decision captured in 03-technical-decisions.md §"Wake
-   * lock toggle"), but the HTML + CSS are still in index.html because the
-   * cleanup lands in phase 7b alongside the pause-removal sweep. Once the
-   * toggle is deleted from index.html, remove everything between this
-   * comment and the matching closing comment below.
+   * Wake-lock toggle — legacy styles. The toggle has been dropped as a user
+   * control (wake lock is always-on during sessions). These styles remain
+   * because the original HTML still references the classes.
    */
   .toggle-row {
     display: flex;

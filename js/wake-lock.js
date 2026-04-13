@@ -21,7 +21,7 @@
  * nothing" from "session active, re-acquire". just-breathe conflates these
  * and ends up in a state where the OS won't sleep the phone after stop.
  *
- * Design: scratch/refactor-plan/02-wake-lock-investigation.md
+ * Design: docs/architecture.md §"Wake-lock design"
  */
 
 let lock = null;

@@ -17,7 +17,7 @@
  *   }
  *
  * `holdSeconds` is the number of seconds to hold the pose *after* speech ends.
- * The old `duration` field is no longer accepted — see migration plan §7a.
+ * The old `duration` field is no longer accepted — see docs/sequence-format.md.
  */
 
 const VALID_BREATHS = new Set(["slow", "guided", "natural"]);

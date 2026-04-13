@@ -9,8 +9,7 @@
  *
  * Why this exists
  * ---------------
- * Phase 4 of the refactor (see scratch/refactor-plan/05-migration-plan.md §4)
- * migrates the original hex-based color system in `index.html` to OKLCH
+ * Converts the original hex-based color system to OKLCH
  * primitives + semantic tokens, mirroring charity calc's pattern. Doing the
  * conversion by hand (or via copy-paste into oklch.com) is tedious and
  * error-prone, and the sRGB → linear RGB → Oklab → OKLCH pipeline is short
